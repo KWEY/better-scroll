@@ -18,6 +18,8 @@ const DEFAULT_OPTIONS = {
   scrollX: false,
   scrollY: true,
   freeScroll: false,
+  minLen: 8,
+  interactive: true,
   directionLockThreshold: 5,
   eventPassthrough: '',
   click: false,
@@ -162,7 +164,9 @@ export function initMixin (BScroll) {
 
     this.setScale(1)
 
-    this._addDOMEvents()
+    if (this.options.interactive) {
+      this._addDOMEvents()
+    }
 
     this._initExtFeatures()
 

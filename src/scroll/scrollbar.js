@@ -2,8 +2,6 @@ import { style, addEvent, removeEvent } from '../util/dom'
 import { getNow } from '../util/lang'
 import { ease } from '../util/ease'
 
-const INDICATOR_MIN_LEN = 8
-
 export function scrollbarMixin(BScroll) {
   BScroll.prototype._initScrollbar = function () {
     const {fade = true, interactive = false} = this.options.scrollbar
@@ -136,6 +134,7 @@ Indicator.prototype.handleEvent = function (e) {
   switch (e.type) {
     case 'touchstart':
     case 'mousedown':
+      this.wrapper.classList.add('mousedown')
       this._start(e)
       break
     case 'touchmove':
@@ -146,6 +145,7 @@ Indicator.prototype.handleEvent = function (e) {
     case 'mouseup':
     case 'touchcancel':
     case 'mousecancel':
+      this.wrapper.classList.remove('mousedown')
       this._end(e)
       break
   }
@@ -183,12 +183,12 @@ Indicator.prototype.updatePosition = function () {
 
     if (y < 0) {
       this.transitionTime(500)
-      const height = Math.max(this.indicatorHeight + y * 3, INDICATOR_MIN_LEN)
+      const height = Math.max(this.indicatorHeight + y * 3, this.scroller.options.minLen)
       this.indicatorStyle.height = `${height}px`
       y = 0
     } else if (y > this.maxPosY) {
       this.transitionTime(500)
-      const height = Math.max(this.indicatorHeight - (y - this.maxPosY) * 3, INDICATOR_MIN_LEN)
+      const height = Math.max(this.indicatorHeight - (y - this.maxPosY) * 3, this.scroller.options.minLen)
       this.indicatorStyle.height = `${height}px`
       y = this.maxPosY + this.indicatorHeight - height
     } else {
@@ -206,12 +206,12 @@ Indicator.prototype.updatePosition = function () {
 
     if (x < 0) {
       this.transitionTime(500)
-      const width = Math.max(this.indicatorWidth + x * 3, INDICATOR_MIN_LEN)
+      const width = Math.max(this.indicatorWidth + x * 3, this.scroller.options.minLen)
       this.indicatorStyle.width = `${width}px`
       x = 0
     } else if (x > this.maxPosX) {
       this.transitionTime(500)
-      const width = Math.max(this.indicatorWidth - (x - this.maxPosX) * 3, INDICATOR_MIN_LEN)
+      const width = Math.max(this.indicatorWidth - (x - this.maxPosX) * 3, this.scroller.options.minLen)
       this.indicatorStyle.width = `${width}px`
       x = this.maxPosX + this.indicatorWidth - width
     } else {
@@ -357,7 +357,7 @@ Indicator.prototype._shouldShow = function () {
 Indicator.prototype._calculate = function () {
   if (this.direction === 'vertical') {
     let wrapperHeight = this.wrapper.clientHeight
-    this.indicatorHeight = Math.max(Math.round(wrapperHeight * wrapperHeight / (this.scroller.scrollerHeight || wrapperHeight || 1)), INDICATOR_MIN_LEN)
+    this.indicatorHeight = Math.max(Math.round(wrapperHeight * wrapperHeight / (this.scroller.scrollerHeight || wrapperHeight || 1)), this.scroller.options.minLen)
     this.indicatorStyle.height = `${this.indicatorHeight}px`
 
     this.maxPosY = wrapperHeight - this.indicatorHeight
@@ -365,7 +365,7 @@ Indicator.prototype._calculate = function () {
     this.sizeRatioY = this.maxPosY / this.scroller.maxScrollY
   } else {
     let wrapperWidth = this.wrapper.clientWidth
-    this.indicatorWidth = Math.max(Math.round(wrapperWidth * wrapperWidth / (this.scroller.scrollerWidth || wrapperWidth || 1)), INDICATOR_MIN_LEN)
+    this.indicatorWidth = Math.max(Math.round(wrapperWidth * wrapperWidth / (this.scroller.scrollerWidth || wrapperWidth || 1)), this.scroller.options.minLen)
     this.indicatorStyle.width = `${this.indicatorWidth}px`
 
     this.maxPosX = wrapperWidth - this.indicatorWidth
