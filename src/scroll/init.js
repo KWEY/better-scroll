@@ -18,8 +18,8 @@ const DEFAULT_OPTIONS = {
   scrollX: false,
   scrollY: true,
   freeScroll: false,
-  minLen: 8,
-  interactive: true,
+  minLen: 30,
+  interactive: false,
   directionLockThreshold: 5,
   eventPassthrough: '',
   click: false,
@@ -33,7 +33,7 @@ const DEFAULT_OPTIONS = {
    *   right: true
    * }
    */
-  bounce: true,
+  bounce: false,
   bounceTime: 800,
   momentum: true,
   momentumLimitTime: 300,
@@ -44,13 +44,13 @@ const DEFAULT_OPTIONS = {
   flickLimitTime: 200,
   flickLimitDistance: 100,
   resizePolling: 60,
-  probeType: 0,
+  probeType: 3,
   preventDefault: true,
   preventDefaultException: {
     tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|AUDIO)$/
   },
   HWCompositing: true,
-  useTransition: true,
+  useTransition: false,
   useTransform: true,
   bindToWrapper: false,
   disableMouse: hasTouch,
@@ -89,12 +89,12 @@ const DEFAULT_OPTIONS = {
   snap: false,
   /**
    * for scrollbar
-   * scrollbar: {
-   *   fade: true,
-   *   interactive: false
-   * }
    */
-  scrollbar: false,
+  // scrollbar: false,
+  scrollbar: {
+    fade: true,
+    interactive: true
+  },
   /**
    * for pull down and refresh
    * pullDownRefresh: {
@@ -112,14 +112,14 @@ const DEFAULT_OPTIONS = {
   pullUpLoad: false,
   /**
    * for mouse wheel
-   * mouseWheel: {
-   *   speed: 20,
-   *   invert: false,
-   *   easeTime: 300
-   * }
    */
-  mouseWheel: false,
-  stopPropagation: false,
+  mouseWheel: {
+    speed: 20,
+    invert: false,
+    easeTime: 0
+  },
+  // mouseWheel: false,
+  stopPropagation: true,
   /**
    * for zoom
    * zoom: {
